@@ -15,8 +15,68 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: unknown
-      errorResponse: unknown
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['index']>>>
+    }
+  }
+  'recipes.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/recipes/new'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['create']>>>
+    }
+  }
+  'recipes.store': {
+    methods: ["POST"]
+    pattern: '/recipes'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/recipe').recipeValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/recipe').recipeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'recipes.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/recipes/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['edit']>>>
+    }
+  }
+  'recipes.update': {
+    methods: ["PATCH"]
+    pattern: '/recipes/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/recipe').recipeValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/recipe').recipeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'recipes.destroy': {
+    methods: ["DELETE"]
+    pattern: '/recipes/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['destroy']>>>
     }
   }
   'new_account.create': {

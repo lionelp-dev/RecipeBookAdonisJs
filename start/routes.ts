@@ -11,7 +11,12 @@ import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').renderInertia('home', {}).as('home')
+router.get('/', [controllers.Recipes, 'index']).as('home')
+router.get('/recipes/new', [controllers.Recipes, 'create']).as('recipes.create')
+router.post('/recipes', [controllers.Recipes, 'store']).as('recipes.store')
+router.get('/recipes/:id/edit', [controllers.Recipes, 'edit']).as('recipes.edit')
+router.patch('/recipes/:id', [controllers.Recipes, 'update']).as('recipes.update')
+router.delete('/recipes/:id', [controllers.Recipes, 'destroy']).as('recipes.destroy')
 
 router
   .group(() => {

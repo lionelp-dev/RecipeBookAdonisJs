@@ -5,5 +5,6 @@
 
 export const controllers = {
   NewAccount: () => import('#controllers/new_account_controller'),
+  Recipes: () => import('#controllers/recipes_controller'),
   Session: () => import('#controllers/session_controller'),
 }

@@ -1,34 +1,36 @@
+@import 'tailwindcss';
+
 :root {
-  --gray-1: oklch(98.5% 0 0);
-  --gray-2: oklch(97% 0 0);
-  --gray-3: oklch(92.2% 0 0);
   --gray-4: oklch(87% 0 0);
   --gray-6: oklch(55.6% 0 0);
-  --gray-7: oklch(43.9% 0 0);
-  --gray-8: oklch(37.1% 0 0);
-  --gray-10: oklch(26.9% 0 0);
   --gray-12: oklch(14.5% 0 0);
 }
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html,
+body,
+#app {
+  min-height: 100%;
+}
+
 body {
-  height: 100%;
-  font-family: system-ui, sans-serif;
+  margin: 0;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: var(--gray-2);
-  color: var(--gray-10);
-  font-size: 16px;
-  line-height: 1.5;
+  background: #f7f5f0;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 
@@ -36,107 +38,15 @@ a {
   display: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--gray-12);
-}
-
-/* Header */
-header {
-  max-width: 1440px;
-  margin: auto;
-  padding: 0 30px;
-}
-header > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 64px;
-}
-header nav {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-}
-header nav a {
-  font-weight: 500;
-  color: var(--gray-8);
-}
-header nav a:hover,
-header nav a.current {
-  color: var(--gray-12);
-}
-
-/* Main */
-main {
-  max-width: 1440px;
-  margin: 0 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: calc(100vh - 65px);
-  background: #fff;
-  border: 1px solid var(--gray-3);
-}
-
-.hero {
-  padding: 100px 50px;
-  max-width: 880px;
-}
-.hero h1 {
-  margin-bottom: 15px;
-  font-size: 52px;
-  font-weight: 600;
-  letter-spacing: -1px;
-  line-height: 1.05;
-}
-.hero p {
-  font-size: 22px;
-  color: var(--gray-7);
-}
-.hero .button {
-  margin-top: 30px;
-  display: inline-block;
-  padding: 10px 16px;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 0 50px;
-  border-top: 1px solid var(--gray-3);
-}
-.cards a {
-  padding: 30px 40px;
-  border-right: 1px solid var(--gray-3);
-}
-.cards a:first-child {
-  border-left: 1px solid var(--gray-3);
-}
-.cards a:hover {
-  background: var(--gray-1);
-}
-.cards h3 {
-  margin-bottom: 10px;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.4px;
-}
-.cards p {
-  color: var(--gray-6);
-}
-
-/* Form */
 .form-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: calc(100vh - 4rem);
+  width: 100%;
   max-width: 400px;
   margin: auto;
+  padding: 24px;
 }
 .form-container h1 {
   font-size: 32px;
@@ -148,50 +58,50 @@ main {
   margin-bottom: 48px;
   color: var(--gray-6);
 }
-form {
+.form-container form {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
-label {
+.form-container label {
   margin-bottom: 4px;
   display: block;
   font-size: 14px;
   font-weight: 500;
 }
-input,
-textarea,
-button {
+.form-container input,
+.form-container textarea,
+.form-container button {
   width: 100%;
   border-radius: 4px;
   font: inherit;
 }
-input {
+.form-container input {
   height: 40px;
   border: 1px solid var(--gray-4);
   padding: 0 16px;
 }
-input[data-invalid='true'],
-textarea[data-invalid='true'] {
+.form-container input[data-invalid='true'],
+.form-container textarea[data-invalid='true'] {
   border-color: #fb2c36;
 }
-input[data-invalid='true'] + div,
-textarea[data-invalid='true'] + div {
+.form-container input[data-invalid='true'] + div,
+.form-container textarea[data-invalid='true'] + div {
   color: #fb2c36;
   font-size: 14px;
   font-weight: 500;
   margin-top: 2px;
 }
 
-button {
+.form-container button {
   background: var(--gray-12);
   color: #fff;
   border: none;
   padding: 10px;
   font-weight: 500;
 }
-button:hover {
-  background: var(--gray-10);
+.form-container button:hover {
+  background: oklch(26.9% 0 0);
 }
 
 /* Alerts */
@@ -202,7 +112,7 @@ button:hover {
   font-size: 14px;
   min-width: 380px;
   font-weight: 500;
-  border: 1px solid var(--gray-3);
+  border: 1px solid oklch(92.2% 0 0);
   border-radius: 10px;
   animation: scale-up 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }

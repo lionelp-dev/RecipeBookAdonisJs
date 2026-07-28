@@ -12,6 +12,36 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['home']['types'],
   },
+  'recipes.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/recipes/new',
+    tokens: [{"old":"/recipes/new","type":0,"val":"recipes","end":""},{"old":"/recipes/new","type":0,"val":"new","end":""}],
+    types: placeholder as Registry['recipes.create']['types'],
+  },
+  'recipes.store': {
+    methods: ["POST"],
+    pattern: '/recipes',
+    tokens: [{"old":"/recipes","type":0,"val":"recipes","end":""}],
+    types: placeholder as Registry['recipes.store']['types'],
+  },
+  'recipes.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/recipes/:id/edit',
+    tokens: [{"old":"/recipes/:id/edit","type":0,"val":"recipes","end":""},{"old":"/recipes/:id/edit","type":1,"val":"id","end":""},{"old":"/recipes/:id/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['recipes.edit']['types'],
+  },
+  'recipes.update': {
+    methods: ["PATCH"],
+    pattern: '/recipes/:id',
+    tokens: [{"old":"/recipes/:id","type":0,"val":"recipes","end":""},{"old":"/recipes/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['recipes.update']['types'],
+  },
+  'recipes.destroy': {
+    methods: ["DELETE"],
+    pattern: '/recipes/:id',
+    tokens: [{"old":"/recipes/:id","type":0,"val":"recipes","end":""},{"old":"/recipes/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['recipes.destroy']['types'],
+  },
   'new_account.create': {
     methods: ["GET","HEAD"],
     pattern: '/signup',
