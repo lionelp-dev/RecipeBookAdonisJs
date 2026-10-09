@@ -22,6 +22,15 @@ export default await Env.create(new URL('../', import.meta.url), {
   APP_KEY: Env.schema.secret(),
   APP_URL: Env.schema.string({ format: 'url', tld: false }),
 
+  // AI generation (OpenRouter)
+  OPENROUTER_API_KEY: Env.schema.string.optional(),
+  OPENROUTER_BASE_URL: Env.schema.string.optional(),
+  OPENROUTER_MODEL: Env.schema.string.optional(),
+  OPENROUTER_IMAGE_MODEL: Env.schema.string.optional(),
+
+  // Drive
+  DRIVE_DISK: Env.schema.enum(['fs'] as const),
+
   // Session
   SESSION_DRIVER: Env.schema.enum(['cookie', 'memory', 'database'] as const),
 })

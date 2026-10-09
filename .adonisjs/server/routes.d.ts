@@ -4,9 +4,11 @@ type ParamValue = string | number | bigint | boolean
 
 export type ScannedRoutes = {
   ALL: {
+    'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'home': { paramsTuple?: []; params?: {} }
     'recipes.create': { paramsTuple?: []; params?: {} }
     'recipes.store': { paramsTuple?: []; params?: {} }
+    'recipes.generate': { paramsTuple?: []; params?: {} }
     'recipes.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'recipes.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'recipes.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -17,6 +19,7 @@ export type ScannedRoutes = {
     'session.destroy': { paramsTuple?: []; params?: {} }
   }
   GET: {
+    'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'home': { paramsTuple?: []; params?: {} }
     'recipes.create': { paramsTuple?: []; params?: {} }
     'recipes.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -24,6 +27,7 @@ export type ScannedRoutes = {
     'session.create': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
+    'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'home': { paramsTuple?: []; params?: {} }
     'recipes.create': { paramsTuple?: []; params?: {} }
     'recipes.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -32,6 +36,7 @@ export type ScannedRoutes = {
   }
   POST: {
     'recipes.store': { paramsTuple?: []; params?: {} }
+    'recipes.generate': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }

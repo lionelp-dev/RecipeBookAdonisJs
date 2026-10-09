@@ -9,7 +9,7 @@ type UseRecipesOptions = {
   initialLastPage: number
 }
 
-type RecipesPageProps = {
+export type RecipesPageProps = {
   recipes: Recipe[]
   totalItems: number
   currentPage: number
@@ -57,6 +57,13 @@ export function useRecipes({
     )
   }, [currentPage, isLoadingMore, lastPage])
 
+  const refreshRecipes = useCallback((page: RecipesPageProps) => {
+    setRecipes((currentRecipes) => deduplicateRecipes([...page.recipes, ...currentRecipes]))
+    setTotalItems(page.totalItems)
+    setLastPage(page.lastPage)
+    setCurrentPage((loadedPage) => Math.min(loadedPage, page.lastPage))
+  }, [])
+
   return {
     recipes,
     totalItems,
@@ -64,6 +71,7 @@ export function useRecipes({
     hasNextPage: currentPage < lastPage,
     loadMoreError,
     loadMore,
+    refreshRecipes,
   }
 }
 

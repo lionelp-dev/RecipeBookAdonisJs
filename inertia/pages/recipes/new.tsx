@@ -13,7 +13,9 @@ export default function NewRecipe() {
             description: null,
             preparationTime: 0,
             cookingTime: 0,
+            imageUrl: null,
             ingredients: [],
+            steps: [],
           }}
           submitLabel="Créer la recette"
           submittingLabel="Enregistrement…"

@@ -15,7 +15,10 @@ export type Recipe = {
   description: string | null
   preparationTime: number
   cookingTime: number
+  imageUrl: string | null
+  imageGenerationStatus: 'not_requested' | 'pending' | 'ready' | 'failed'
   ingredients: RecipeIngredient[]
+  steps: { id: number; instruction: string; position: number }[]
 }
 
 export function RecipeDetails({ recipe }: { recipe: Recipe }) {
@@ -27,7 +30,25 @@ export function RecipeDetails({ recipe }: { recipe: Recipe }) {
       aria-labelledby="recipe-detail-title"
     >
       <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col">
-        <div className="h-44 shrink-0 rounded-xl bg-stone-200 shadow-sm sm:h-52" />
+        {recipe.imageUrl ? (
+          <img
+            src={recipe.imageUrl}
+            alt={`Photo de ${recipe.name}`}
+            className="h-44 w-full shrink-0 rounded-xl object-cover shadow-sm sm:h-52"
+          />
+        ) : recipe.imageGenerationStatus === 'pending' ? (
+          <div className="flex h-44 shrink-0 items-center justify-center rounded-xl bg-stone-100 shadow-sm sm:h-52">
+            <div
+              className="flex items-center gap-2 text-sm font-medium text-stone-500"
+              aria-live="polite"
+            >
+              <span className="size-4 animate-spin rounded-full border-2 border-stone-300 border-t-stone-700" />
+              Génération de l’image…
+            </div>
+          </div>
+        ) : (
+          <div className="h-44 shrink-0 rounded-xl bg-stone-200 shadow-sm sm:h-52" />
+        )}
 
         <div className="flex flex-1 flex-col px-1 pb-6 pt-4">
           <h1
@@ -77,6 +98,24 @@ export function RecipeDetails({ recipe }: { recipe: Recipe }) {
                   </li>
                 ))}
               </ul>
+            )}
+          </div>
+
+          <div className="mt-5 border-t border-stone-200 pt-4">
+            <h2 className="text-base font-bold text-stone-900">Préparation</h2>
+            {recipe.steps.length === 0 ? (
+              <p className="mt-3 text-sm text-stone-500">Aucune étape pour le moment.</p>
+            ) : (
+              <ol className="mt-3 space-y-3">
+                {recipe.steps.map((step, index) => (
+                  <li key={step.id} className="flex gap-3 text-sm leading-6 text-stone-600">
+                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-stone-100 text-xs font-bold text-stone-700">
+                      {index + 1}
+                    </span>
+                    <span>{step.instruction}</span>
+                  </li>
+                ))}
+              </ol>
             )}
           </div>
 

@@ -1,9 +1,15 @@
 import { RecipeSchema } from '#database/schema'
 import RecipeIngredient from '#models/recipe_ingredient'
+import RecipeStep from '#models/recipe_step'
 import { hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
+
+export type ImageGenerationStatus = 'not_requested' | 'pending' | 'ready' | 'failed'
 
 export default class Recipe extends RecipeSchema {
   @hasMany(() => RecipeIngredient, { foreignKey: 'recipeId' })
   declare ingredients: HasMany<typeof RecipeIngredient>
+
+  @hasMany(() => RecipeStep, { foreignKey: 'recipeId' })
+  declare steps: HasMany<typeof RecipeStep>
 }

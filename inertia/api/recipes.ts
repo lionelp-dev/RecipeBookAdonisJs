@@ -1,4 +1,4 @@
-import Recipe from '#models/recipe'
+import type Recipe from '#models/recipe'
 
 export type RecipePage = {
   items: Recipe[]

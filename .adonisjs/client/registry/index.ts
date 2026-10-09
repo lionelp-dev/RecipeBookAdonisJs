@@ -6,6 +6,12 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
+  'drive.fs.serve': {
+    methods: ["GET","HEAD"],
+    pattern: '/uploads/*',
+    tokens: [{"old":"/uploads/*","type":0,"val":"uploads","end":""},{"old":"/uploads/*","type":2,"val":"*","end":""}],
+    types: placeholder as Registry['drive.fs.serve']['types'],
+  },
   'home': {
     methods: ["GET","HEAD"],
     pattern: '/',
@@ -23,6 +29,12 @@ const routes = {
     pattern: '/recipes',
     tokens: [{"old":"/recipes","type":0,"val":"recipes","end":""}],
     types: placeholder as Registry['recipes.store']['types'],
+  },
+  'recipes.generate': {
+    methods: ["POST"],
+    pattern: '/recipes/generate',
+    tokens: [{"old":"/recipes/generate","type":0,"val":"recipes","end":""},{"old":"/recipes/generate","type":0,"val":"generate","end":""}],
+    types: placeholder as Registry['recipes.generate']['types'],
   },
   'recipes.edit': {
     methods: ["GET","HEAD"],

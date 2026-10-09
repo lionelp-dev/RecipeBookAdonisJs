@@ -21,7 +21,12 @@ export default class extends BaseSeeder {
       })
       await recipe.save()
       await recipe.related('ingredients').createMany(
-        fixture.ingredients.map(([name, quantity, unit], position) => ({ name, quantity, unit, position }))
+        fixture.ingredients.map(([name, quantity, unit], position) => ({
+          name,
+          quantity,
+          unit,
+          position,
+        }))
       )
     }
   }

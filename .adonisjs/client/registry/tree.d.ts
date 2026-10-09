@@ -2,10 +2,16 @@
 import type { routes } from './index.ts'
 
 export interface ApiDefinition {
+  drive: {
+    fs: {
+      serve: typeof routes['drive.fs.serve']
+    }
+  }
   home: typeof routes['home']
   recipes: {
     create: typeof routes['recipes.create']
     store: typeof routes['recipes.store']
+    generate: typeof routes['recipes.generate']
     edit: typeof routes['recipes.edit']
     update: typeof routes['recipes.update']
     destroy: typeof routes['recipes.destroy']

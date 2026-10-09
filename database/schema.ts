@@ -7,6 +7,17 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class AiRecipeNameReservationSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'normalizedName'] as const
+  $columns = AiRecipeNameReservationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare normalizedName: string
+}
+
 export class RecipeIngredientSchema extends BaseModel {
   static $columns = ['id', 'name', 'position', 'quantity', 'recipeId', 'unit'] as const
   $columns = RecipeIngredientSchema.$columns
@@ -24,12 +35,27 @@ export class RecipeIngredientSchema extends BaseModel {
   declare unit: string | null
 }
 
+export class RecipeStepSchema extends BaseModel {
+  static $columns = ['id', 'instruction', 'position', 'recipeId'] as const
+  $columns = RecipeStepSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare instruction: string
+  @column()
+  declare position: number
+  @column()
+  declare recipeId: number
+}
+
 export class RecipeSchema extends BaseModel {
   static $columns = [
     'cookingTime',
     'createdAt',
     'description',
     'id',
+    'imageGenerationStatus',
+    'imageKey',
     'name',
     'preparationTime',
     'updatedAt',
@@ -43,6 +69,10 @@ export class RecipeSchema extends BaseModel {
   declare description: string | null
   @column({ isPrimary: true })
   declare id: number
+  @column()
+  declare imageGenerationStatus: string
+  @column()
+  declare imageKey: string | null
   @column()
   declare name: string
   @column()

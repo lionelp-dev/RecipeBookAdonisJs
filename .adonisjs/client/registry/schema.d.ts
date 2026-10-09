@@ -7,6 +7,18 @@ import type { InferInput, SimpleError } from '@vinejs/vine/types'
 export type ParamValue = string | number | bigint | boolean
 
 export interface Registry {
+  'drive.fs.serve': {
+    methods: ["GET","HEAD"]
+    pattern: '/uploads/*'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { '*': ParamValue[] }
+      query: {}
+      response: unknown
+      errorResponse: unknown
+    }
+  }
   'home': {
     methods: ["GET","HEAD"]
     pattern: '/'
@@ -41,6 +53,18 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/recipe').recipeValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'recipes.generate': {
+    methods: ["POST"]
+    pattern: '/recipes/generate'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipe_generation_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipe_generation_controller').default['store']>>>
     }
   }
   'recipes.edit': {

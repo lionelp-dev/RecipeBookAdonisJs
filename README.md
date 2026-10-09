@@ -1,6 +1,6 @@
 # Recipe Book - AdonisJS, Inertia et React
 
-Recipe Book est une application web full-stack pédagogique de gestion de recettes, construite avec AdonisJS, Lucid ORM, SQLite, Inertia.js et React. Elle permet de consulter, de créer, de modifier et de supprimer des recettes comprenant un nom, une description, des durées et une liste d'ingrédients.
+Recipe Book est une application web full-stack pédagogique de gestion de recettes, construite avec AdonisJS, Lucid ORM, SQLite, Inertia.js et React. Elle permet de consulter, de créer, de modifier et de supprimer des recettes comprenant un nom, une description, des durées, une image et une liste d'ingrédients.
 
 ![Interface de Recipe Book](./docs/images/app.png)
 
@@ -21,6 +21,7 @@ Ce projet sert de support pour pratiquer les bases d'une application web full-st
 
 - créer une interface React avec Inertia.js ;
 - gérer les formulaires, les erreurs de validation et les messages flash ;
+- téléverser et servir localement une image de recette avec AdonisJS Drive ;
 - gérer des champs dynamiques pour les ingrédients ;
 - composer l'interface avec des composants réutilisables pour la liste, le détail et le formulaire de recette ;
 - consommer les pages de recettes et déclencher le chargement de la page suivante au défilement ;
@@ -32,6 +33,7 @@ Ce projet sert de support pour pratiquer les bases d'une application web full-st
 - chargement progressif de la liste au défilement : le serveur renvoie les recettes par pages et le frontend demande automatiquement la page suivante lorsque l'utilisateur atteint le bas de la liste ;
 - affichage du détail d'une recette avec sa liste d'ingrédients ;
 - création et modification d'une recette à partir d'un formulaire commun organisé par sections ;
+- ajout, remplacement ou suppression d'une image de recette ;
 - ajout et suppression d'ingrédients dynamiques dans le formulaire ;
 - suppression d'une recette depuis son aperçu ;
 - navigation par fil d’Ariane entre le carnet, la création et l’édition ;
@@ -61,6 +63,8 @@ Créer le fichier d'environnement local :
 ```bash
 cp .env.example .env
 ```
+
+Les images de recettes sont enregistrées localement dans `storage/` et sont disponibles sous `/uploads`. Le disque local est activé par `DRIVE_DISK=fs`.
 
 Générer la clé d'application si `APP_KEY` est vide :
 

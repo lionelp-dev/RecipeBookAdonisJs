@@ -1,9 +1,10 @@
 import type { Data } from '@generated/data'
+import { usePoll } from '@inertiajs/react'
 import { useMemo, useState } from 'react'
 import { AppHeader } from '~/components/app_header'
 import { RecipeDetails, type Recipe } from '~/components/recipe_details'
 import { RecipeList } from '~/components/recipe_list'
-import { useRecipes } from '~/hooks/use_recipes'
+import { useRecipes, type RecipesPageProps } from '~/hooks/use_recipes'
 import type { InertiaProps } from '~/types'
 
 type HomeProps = InertiaProps<{
@@ -19,6 +20,7 @@ export default function Home(props: HomeProps) {
 
 function RecipeScreen({ recipes: initialRecipes, totalItems, currentPage, lastPage }: HomeProps) {
   const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null)
+  const [isGeneratingRecipe, setIsGeneratingRecipe] = useState(false)
   const {
     recipes,
     totalItems: recipeCount,
@@ -26,11 +28,17 @@ function RecipeScreen({ recipes: initialRecipes, totalItems, currentPage, lastPa
     hasNextPage,
     loadMoreError,
     loadMore,
+    refreshRecipes,
   } = useRecipes({
     initialRecipes: initialRecipes as Recipe[],
     initialTotalItems: totalItems,
     initialCurrentPage: currentPage,
     initialLastPage: lastPage,
+  })
+
+  usePoll(5_000, {
+    only: ['recipes', 'totalItems', 'currentPage', 'lastPage'],
+    onSuccess: (page) => refreshRecipes(page.props as unknown as RecipesPageProps),
   })
 
   const selectedRecipe = useMemo(
@@ -61,8 +69,11 @@ function RecipeScreen({ recipes: initialRecipes, totalItems, currentPage, lastPa
             selectedRecipeId={selectedRecipe?.id ?? null}
             isLoadingMore={isLoadingMore}
             hasNextPage={hasNextPage}
+            isGeneratingRecipe={isGeneratingRecipe}
             loadMoreError={loadMoreError}
             onLoadMore={loadMore}
+            onGenerationStatusChange={setIsGeneratingRecipe}
+            onRecipesUpdated={refreshRecipes}
             onSelect={(recipe) => setSelectedRecipeId(recipe.id)}
           />
         </section>
