@@ -14,9 +14,9 @@ export interface Registry {
       body: {}
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#validators/recipe').recipePageValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipes_controller').default['index']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'recipes.create': {

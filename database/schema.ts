@@ -7,8 +7,33 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class RecipeIngredientSchema extends BaseModel {
+  static $columns = ['id', 'name', 'position', 'quantity', 'recipeId', 'unit'] as const
+  $columns = RecipeIngredientSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column()
+  declare position: number
+  @column()
+  declare quantity: number
+  @column()
+  declare recipeId: number
+  @column()
+  declare unit: string | null
+}
+
 export class RecipeSchema extends BaseModel {
-  static $columns = ['cookingTime', 'createdAt', 'description', 'id', 'name', 'preparationTime', 'updatedAt'] as const
+  static $columns = [
+    'cookingTime',
+    'createdAt',
+    'description',
+    'id',
+    'name',
+    'preparationTime',
+    'updatedAt',
+  ] as const
   $columns = RecipeSchema.$columns
   @column()
   declare cookingTime: number

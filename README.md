@@ -1,42 +1,45 @@
 # Recipe Book - AdonisJS, Inertia et React
 
-Recipe Book est une application web full-stack pédagogique de gestion de recettes, construite avec AdonisJS, Lucid ORM, SQLite, Inertia.js et React. Elle permet de consulter, de créer, de modifier et de supprimer des recettes comprenant un nom, une description, un temps de préparation et un temps de cuisson.
+Recipe Book est une application web full-stack pédagogique de gestion de recettes, construite avec AdonisJS, Lucid ORM, SQLite, Inertia.js et React. Elle permet de consulter, de créer, de modifier et de supprimer des recettes comprenant un nom, une description, des durées et une liste d'ingrédients.
 
 ![Interface de Recipe Book](./docs/images/app.png)
 
 ## Objectifs d'apprentissage
 
-Ce projet sert de support pour pratiquer :
+Ce projet sert de support pour pratiquer les bases d'une application web full-stack :
 
-- la création d'une application AdonisJS avec des controllers, routes et middlewares ;
-- la persistance des données avec Lucid ORM, les migrations et SQLite ;
-- la validation des formulaires avec VineJS ;
-- la création d'une interface React avec Inertia.js ;
-- la gestion des formulaires, des erreurs de validation et des messages flash ;
-- l'utilisation de Vite, Tailwind CSS et TypeScript dans une application full-stack ;
-- la mise en place d'un seeder pour charger des données de démonstration.
+### Backend
+
+- structurer une application AdonisJS avec des controllers, routes et middlewares ;
+- manipuler Lucid ORM, les migrations et une base SQLite locale ;
+- modéliser une relation entre recettes et ingrédients ;
+- valider les données envoyées avec VineJS ;
+- paginer les recettes côté serveur afin de limiter le nombre d'éléments chargés à chaque requête et de permettre un scroll infini côté frontend ;
+- initialiser des données de démonstration avec un seeder.
+
+### Frontend
+
+- créer une interface React avec Inertia.js ;
+- gérer les formulaires, les erreurs de validation et les messages flash ;
+- gérer des champs dynamiques pour les ingrédients ;
+- composer l'interface avec des composants réutilisables pour la liste, le détail et le formulaire de recette ;
+- consommer les pages de recettes et déclencher le chargement de la page suivante au défilement ;
+- utiliser Vite, Tailwind CSS et TypeScript dans une application full-stack.
 
 ## Fonctionnalités
 
-- affichage de la liste des recettes et de leurs durées ;
-- création d'une recette avec nom, description, temps de préparation et temps de cuisson ;
-- modification d'une recette existante ;
-- suppression d'une recette depuis la liste ;
+- affichage des recettes dans une interface à deux panneaux : un panneau contient la liste défilante des recettes et l'autre affiche l'aperçu détaillé de la recette sélectionnée ;
+- chargement progressif de la liste au défilement : le serveur renvoie les recettes par pages et le frontend demande automatiquement la page suivante lorsque l'utilisateur atteint le bas de la liste ;
+- affichage du détail d'une recette avec sa liste d'ingrédients ;
+- création et modification d'une recette à partir d'un formulaire commun organisé par sections ;
+- ajout et suppression d'ingrédients dynamiques dans le formulaire ;
+- suppression d'une recette depuis son aperçu ;
+- navigation par fil d’Ariane entre le carnet, la création et l’édition ;
 - validation des champs côté serveur ;
 - messages de confirmation après création, modification et suppression ;
 - pages de connexion et d'inscription ;
-- données de démonstration comprenant dix recettes françaises ;
+- données de démonstration comprenant trente recettes françaises et leurs ingrédients ;
 - stockage local des données dans une base SQLite.
-
-## Architecture
-
-Le projet est organisé comme une application AdonisJS complète :
-
-- `app/` : controllers, models, validators, transformers et middlewares ;
-- `database/` : migrations, schéma et seeder de recettes ;
-- `inertia/` : pages, layouts, composants React et styles de l'interface ;
-- `config/` : configuration AdonisJS, Lucid, session, auth, CORS, Shield et Vite ;
-- `start/` : routes HTTP et configuration de démarrage.
 
 ## Installation
 
@@ -45,7 +48,9 @@ Le projet est organisé comme une application AdonisJS complète :
 - Node.js 24 ou supérieur ;
 - pnpm.
 
-Installer les dépendances depuis la racine du projet :
+### Backend
+
+Installer les dépendances du projet depuis sa racine :
 
 ```bash
 pnpm install
@@ -75,14 +80,18 @@ Charger les recettes de démonstration :
 node ace db:seed
 ```
 
-Le seeder ajoute les recettes uniquement lorsque la table `recipes` est vide et ne modifie pas une base contenant déjà des données.
+Le seeder crée les recettes de démonstration absentes et complète les recettes existantes qui ne possèdent pas encore d'ingrédients.
+
+### Frontend
+
+L'interface React est intégrée à l'application AdonisJS et utilise les dépendances installées à l'étape précédente.
 
 ## Démarrage
 
-Lancer l'application en développement :
+1. Lancer l'application AdonisJS :
 
-```bash
-pnpm dev
-```
+   ```bash
+   pnpm dev
+   ```
 
-L'application est accessible sur `http://localhost:3333`.
+   L'application est accessible sur `http://localhost:3333`.
