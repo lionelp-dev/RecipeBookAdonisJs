@@ -27,6 +27,7 @@ const bodyParserConfig = defineConfig({
    * Config for the JSON parser.
    */
   json: {
+    limit: '5mb',
     /**
      * Normalize empty string values to null.
      */

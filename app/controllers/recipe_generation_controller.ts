@@ -1,5 +1,5 @@
-import RecipeGenerationWorkflow from '#services/recipe_generation_workflow'
-import env from '#start/env'
+import GenerateRecipesUseCase from '#features/recipes/use_cases/generate_recipes_use_case'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import z from 'zod'
 
@@ -9,8 +9,9 @@ const requestSchema = z.object({
   generateImages: z.boolean().default(false),
 })
 
+@inject()
 export default class RecipeGenerationController {
-  private readonly recipeGenerationWorkflow = new RecipeGenerationWorkflow()
+  constructor(private readonly generateRecipes: GenerateRecipesUseCase) {}
 
   async store({ request, response, session }: HttpContext) {
     const validatedRequest = requestSchema.safeParse(request.all())
@@ -18,14 +19,14 @@ export default class RecipeGenerationController {
       session.flash('inputErrorsBag', z.flattenError(validatedRequest.error).fieldErrors)
       return response.redirect().back()
     }
-    if (!env.get('OPENROUTER_API_KEY')) {
+    if (!this.generateRecipes.isConfigured()) {
       session.flash('inputErrorsBag', {
         prompt: ['La génération IA n’est pas configurée sur ce serveur.'],
       })
       return response.redirect().back()
     }
 
-    const { persistedRecipeCount, failedRecipeCount } = await this.recipeGenerationWorkflow.run(
+    const { persistedRecipeCount, failedRecipeCount } = await this.generateRecipes.execute(
       validatedRequest.data
     )
 

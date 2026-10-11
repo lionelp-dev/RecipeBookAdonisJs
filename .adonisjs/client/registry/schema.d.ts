@@ -67,6 +67,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipe_generation_controller').default['store']>>>
     }
   }
+  'recipe_discovery.pool': {
+    methods: ["POST"]
+    pattern: '/recipes/discover/pool'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/recipe_discovery').recipeDiscoveryPoolValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/recipe_discovery').recipeDiscoveryPoolValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipe_discovery_controller').default['pool']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipe_discovery_controller').default['pool']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'recipe_discovery.save': {
+    methods: ["POST"]
+    pattern: '/recipes/discover/save'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/recipe_discovery').saveDiscoveredRecipeValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/recipe_discovery').saveDiscoveredRecipeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/recipe_discovery_controller').default['save']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/recipe_discovery_controller').default['save']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'recipes.edit': {
     methods: ["GET","HEAD"]
     pattern: '/recipes/:id/edit'

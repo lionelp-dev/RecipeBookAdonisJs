@@ -1,30 +1,31 @@
-import Recipe from '#models/recipe'
-import RecipeIngredient from '#models/recipe_ingredient'
-import RecipeStep from '#models/recipe_step'
-import RecipeImageService from '#services/recipe_image_service'
+import CreateRecipeUseCase from '#features/recipes/use_cases/create_recipe_use_case'
+import DeleteRecipeUseCase from '#features/recipes/use_cases/delete_recipe_use_case'
+import GetRecipeUseCase from '#features/recipes/use_cases/get_recipe_use_case'
+import ListRecipesUseCase from '#features/recipes/use_cases/list_recipes_use_case'
+import UpdateRecipeUseCase from '#features/recipes/use_cases/update_recipe_use_case'
+import type Recipe from '#models/recipe'
 import RecipeTransformer from '#transformers/recipe_transformer'
 import { recipePageValidator, recipeValidator } from '#validators/recipe'
-import logger from '@adonisjs/core/services/logger'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
-import db from '@adonisjs/lucid/services/db'
 
+@inject()
 export default class RecipesController {
-  private readonly recipeImages = new RecipeImageService()
-
-  private recipesQuery() {
-    return Recipe.query()
-      .preload('ingredients', (query) => query.orderBy('position', 'asc'))
-      .preload('steps', (query) => query.orderBy('position', 'asc'))
-      .orderBy('id', 'desc')
-  }
+  constructor(
+    private readonly listRecipes: ListRecipesUseCase,
+    private readonly getRecipe: GetRecipeUseCase,
+    private readonly createRecipe: CreateRecipeUseCase,
+    private readonly updateRecipe: UpdateRecipeUseCase,
+    private readonly deleteRecipe: DeleteRecipeUseCase
+  ) {}
 
   async index({ request, inertia }: HttpContext) {
     const { page: pageNumber = 1 } = await request.validateUsing(recipePageValidator)
 
-    const page = await this.recipesQuery().paginate(pageNumber, 6)
+    const page = await this.listRecipes.execute(pageNumber)
 
     return inertia.render('home', {
-      recipes: RecipeTransformer.transform(page.all()),
+      recipes: RecipeTransformer.transform(page.all() as Recipe[]),
       totalItems: page.total,
       currentPage: page.currentPage,
       lastPage: page.lastPage,
@@ -37,56 +38,14 @@ export default class RecipesController {
 
   async store({ request, response, session }: HttpContext) {
     const payload = await request.validateUsing(recipeValidator)
-    const imageKey = payload.image ? await this.recipeImages.store(payload.image) : null
-
-    try {
-      await db.transaction(async (trx) => {
-        const recipe = await Recipe.create(
-          {
-            name: payload.name,
-            description: payload.description || null,
-            preparationTime: payload.preparationTime,
-            cookingTime: payload.cookingTime,
-            imageKey,
-            imageGenerationStatus: imageKey ? 'ready' : 'not_requested',
-          },
-          { client: trx }
-        )
-
-        await RecipeIngredient.createMany(
-          payload.ingredients.map((ingredient, position) => ({
-            recipeId: recipe.id,
-            name: ingredient.name,
-            quantity: ingredient.quantity,
-            unit: ingredient.unit || null,
-            position,
-          })),
-          { client: trx }
-        )
-        await RecipeStep.createMany(
-          payload.steps.map((step, position) => ({
-            recipeId: recipe.id,
-            instruction: step.instruction,
-            position,
-          })),
-          { client: trx }
-        )
-      })
-    } catch (error) {
-      await this.deleteImageQuietly(imageKey)
-      throw error
-    }
+    await this.createRecipe.execute(payload)
 
     session.flash('success', 'La recette a été créée.')
     return response.redirect().toRoute('home')
   }
 
   async edit({ params, inertia }: HttpContext) {
-    const recipe = await Recipe.query()
-      .where('id', params.id)
-      .preload('ingredients', (query) => query.orderBy('position', 'asc'))
-      .preload('steps', (query) => query.orderBy('position', 'asc'))
-      .firstOrFail()
+    const recipe = (await this.getRecipe.execute(params.id)) as Recipe
 
     return inertia.render('recipes/edit', {
       recipe: RecipeTransformer.transform(recipe),
@@ -95,86 +54,16 @@ export default class RecipesController {
 
   async update({ params, request, response, session }: HttpContext) {
     const payload = await request.validateUsing(recipeValidator)
-    const newImageKey = payload.image ? await this.recipeImages.store(payload.image) : null
-    let previousImageKey: string | null = null
-
-    try {
-      await db.transaction(async (trx) => {
-        const recipe = await Recipe.findOrFail(params.id, { client: trx })
-        previousImageKey = recipe.imageKey
-        const imageKey = newImageKey ?? (payload.removeImage ? null : previousImageKey)
-        const imageGenerationStatus = newImageKey
-          ? 'ready'
-          : payload.removeImage
-            ? 'not_requested'
-            : recipe.imageGenerationStatus
-
-        recipe.merge({
-          name: payload.name,
-          description: payload.description || null,
-          preparationTime: payload.preparationTime,
-          cookingTime: payload.cookingTime,
-          imageKey,
-          imageGenerationStatus,
-        })
-        await recipe.save()
-
-        await RecipeIngredient.query({ client: trx }).where('recipe_id', recipe.id).delete()
-        await RecipeIngredient.createMany(
-          payload.ingredients.map((ingredient, position) => ({
-            recipeId: recipe.id,
-            name: ingredient.name,
-            quantity: ingredient.quantity,
-            unit: ingredient.unit || null,
-            position,
-          })),
-          { client: trx }
-        )
-        await RecipeStep.query({ client: trx }).where('recipe_id', recipe.id).delete()
-        await RecipeStep.createMany(
-          payload.steps.map((step, position) => ({
-            recipeId: recipe.id,
-            instruction: step.instruction,
-            position,
-          })),
-          { client: trx }
-        )
-      })
-    } catch (error) {
-      await this.deleteImageQuietly(newImageKey)
-      throw error
-    }
-
-    if (
-      previousImageKey &&
-      (newImageKey || payload.removeImage) &&
-      previousImageKey !== newImageKey
-    ) {
-      await this.deleteImageQuietly(previousImageKey)
-    }
+    await this.updateRecipe.execute(params.id, payload)
 
     session.flash('success', 'La recette a été modifiée.')
     return response.redirect().toRoute('home')
   }
 
   async destroy({ params, response, session }: HttpContext) {
-    const recipe = await Recipe.findOrFail(params.id)
-    const imageKey = recipe.imageKey
-
-    await recipe.delete()
-    await this.deleteImageQuietly(imageKey)
+    await this.deleteRecipe.execute(params.id)
 
     session.flash('success', 'La recette a été supprimée.')
     return response.redirect().toRoute('home')
-  }
-
-  private async deleteImageQuietly(imageKey: string | null) {
-    if (!imageKey) return
-
-    try {
-      await this.recipeImages.delete(imageKey)
-    } catch (error) {
-      logger.error({ err: error, imageKey }, 'Impossible de supprimer une image de recette')
-    }
   }
 }

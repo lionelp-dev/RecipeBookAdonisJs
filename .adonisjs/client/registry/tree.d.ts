@@ -16,6 +16,10 @@ export interface ApiDefinition {
     update: typeof routes['recipes.update']
     destroy: typeof routes['recipes.destroy']
   }
+  recipeDiscovery: {
+    pool: typeof routes['recipe_discovery.pool']
+    save: typeof routes['recipe_discovery.save']
+  }
   newAccount: {
     create: typeof routes['new_account.create']
     store: typeof routes['new_account.store']

@@ -9,6 +9,8 @@ export type ScannedRoutes = {
     'recipes.create': { paramsTuple?: []; params?: {} }
     'recipes.store': { paramsTuple?: []; params?: {} }
     'recipes.generate': { paramsTuple?: []; params?: {} }
+    'recipe_discovery.pool': { paramsTuple?: []; params?: {} }
+    'recipe_discovery.save': { paramsTuple?: []; params?: {} }
     'recipes.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'recipes.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'recipes.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -37,6 +39,8 @@ export type ScannedRoutes = {
   POST: {
     'recipes.store': { paramsTuple?: []; params?: {} }
     'recipes.generate': { paramsTuple?: []; params?: {} }
+    'recipe_discovery.pool': { paramsTuple?: []; params?: {} }
+    'recipe_discovery.save': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }

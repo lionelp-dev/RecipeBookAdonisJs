@@ -7,4 +7,7 @@
 /// <reference path="../../config/auth.ts" />
 /// <reference path="../../config/drive.ts" />
 /// <reference path="../../config/hash.ts" />
+/// <reference path="../../config/image_generation.ts" />
 /// <reference path="../../config/logger.ts" />
+/// <reference path="../../config/openrouter.ts" />
+/// <reference path="../../config/recipe_generation.ts" />

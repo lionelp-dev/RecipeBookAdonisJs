@@ -26,50 +26,55 @@ export function RecipeDetails({ recipe }: { recipe: Recipe }) {
 
   return (
     <aside
-      className="order-1 flex min-h-0 flex-col overflow-y-auto bg-white px-6 py-4 sm:px-10 sm:py-6"
+      className="order-1 flex min-h-0 flex-col overflow-x-hidden overflow-y-auto bg-white px-6 py-4 sm:px-10 sm:py-6"
       aria-labelledby="recipe-detail-title"
     >
       <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col">
-        {recipe.imageUrl ? (
-          <img
-            src={recipe.imageUrl}
-            alt={`Photo de ${recipe.name}`}
-            className="h-44 w-full shrink-0 rounded-xl object-cover shadow-sm sm:h-52"
-          />
-        ) : recipe.imageGenerationStatus === 'pending' ? (
-          <div className="flex h-44 shrink-0 items-center justify-center rounded-xl bg-stone-100 shadow-sm sm:h-52">
-            <div
-              className="flex items-center gap-2 text-sm font-medium text-stone-500"
-              aria-live="polite"
-            >
-              <span className="size-4 animate-spin rounded-full border-2 border-stone-300 border-t-stone-700" />
-              Génération de l’image…
+        <div className="shrink-0">
+          {recipe.imageUrl ? (
+            <img
+              src={recipe.imageUrl}
+              alt={`Photo de ${recipe.name}`}
+              className="h-44 w-full rounded-xl object-cover shadow-sm sm:h-52"
+            />
+          ) : recipe.imageGenerationStatus === 'pending' ? (
+            <div className="flex h-44 items-center justify-center rounded-xl bg-stone-100 shadow-sm sm:h-52">
+              <div
+                className="flex items-center gap-2 text-sm font-medium text-stone-500"
+                aria-live="polite"
+              >
+                <span className="size-4 animate-spin rounded-full border-2 border-stone-300 border-t-stone-700" />
+                Génération de l’image…
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="h-44 shrink-0 rounded-xl bg-stone-200 shadow-sm sm:h-52" />
-        )}
+          ) : (
+            <div className="h-44 rounded-xl bg-stone-200 shadow-sm sm:h-52" />
+          )}
+        </div>
 
         <div className="flex flex-1 flex-col px-1 pb-6 pt-4">
-          <h1
-            id="recipe-detail-title"
-            className="font-serif text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl"
-          >
-            {recipe.name}
-          </h1>
+          <div className="recipe-sticky-surface recipe-sticky-details lg:sticky lg:-top-6 lg:z-10 lg:bg-white lg:py-3">
+            <h1
+              id="recipe-detail-title"
+              className="font-serif text-2xl font-bold tracking-tight text-stone-900 sm:text-3xl"
+            >
+              {recipe.name}
+            </h1>
 
-          <dl className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-stone-500">
-            <div className="flex items-center gap-2">
-              <Clock3 aria-hidden="true" size={16} className="text-stone-400" />
-              <dd>{totalTime} min</dd>
-            </div>
-            <div className="flex items-center gap-2">
-              <UtensilsCrossed aria-hidden="true" size={16} className="text-stone-400" />
-              <dd>
-                {recipe.ingredients.length} ingrédient{recipe.ingredients.length === 1 ? '' : 's'}
-              </dd>
-            </div>
-          </dl>
+            <dl className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-stone-500">
+              <div className="flex items-center gap-2">
+                <Clock3 aria-hidden="true" size={16} className="text-stone-400" />
+                <dd>{totalTime} min</dd>
+              </div>
+              <div className="flex items-center gap-2">
+                <UtensilsCrossed aria-hidden="true" size={16} className="text-stone-400" />
+                <dd>
+                  {recipe.ingredients.length} ingrédient
+                  {recipe.ingredients.length === 1 ? '' : 's'}
+                </dd>
+              </div>
+            </dl>
+          </div>
 
           <p className="mt-4 max-w-2xl text-sm leading-6 text-stone-500">
             {recipe.description || 'Aucune description disponible.'}

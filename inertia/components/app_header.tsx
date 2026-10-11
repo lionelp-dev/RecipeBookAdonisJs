@@ -1,11 +1,13 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Plus } from 'lucide-react'
+import { Plus, Sparkles, X } from 'lucide-react'
 
 type AppHeaderProps = {
   currentPage: string
+  onDiscover?: () => void
+  isDiscovering?: boolean
 }
 
-export function AppHeader({ currentPage }: AppHeaderProps) {
+export function AppHeader({ currentPage, onDiscover, isDiscovering = false }: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-20 border-b border-stone-200 bg-white/95 px-4 py-3 backdrop-blur sm:px-6">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
@@ -28,13 +30,37 @@ export function AppHeader({ currentPage }: AppHeaderProps) {
           </ol>
         </nav>
 
-        <Link
-          route="recipes.create"
-          className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-stone-900 px-3 text-sm font-semibold text-white shadow-sm transition hover:bg-stone-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 sm:px-4"
-        >
-          <Plus aria-hidden="true" size={16} />
-          Nouvelle recette
-        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          {onDiscover ? (
+            <button
+              type="button"
+              onClick={onDiscover}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-stone-300 bg-white px-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 sm:px-4"
+            >
+              {isDiscovering ? (
+                <X aria-hidden="true" size={16} />
+              ) : (
+                <Sparkles aria-hidden="true" size={16} />
+              )}
+              {isDiscovering ? 'Quitter le mode découverte' : 'Découvrir des recettes avec l’IA'}
+            </button>
+          ) : (
+            <Link
+              href="/"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-stone-300 bg-white px-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 sm:px-4"
+            >
+              <Sparkles aria-hidden="true" size={16} />
+              Mes recettes
+            </Link>
+          )}
+          <Link
+            route="recipes.create"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-stone-900 px-3 text-sm font-semibold text-white shadow-sm transition hover:bg-stone-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-900 sm:px-4"
+          >
+            <Plus aria-hidden="true" size={16} />
+            Nouvelle recette
+          </Link>
+        </div>
       </div>
     </header>
   )

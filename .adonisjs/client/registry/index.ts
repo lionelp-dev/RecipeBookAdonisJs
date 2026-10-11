@@ -36,6 +36,18 @@ const routes = {
     tokens: [{"old":"/recipes/generate","type":0,"val":"recipes","end":""},{"old":"/recipes/generate","type":0,"val":"generate","end":""}],
     types: placeholder as Registry['recipes.generate']['types'],
   },
+  'recipe_discovery.pool': {
+    methods: ["POST"],
+    pattern: '/recipes/discover/pool',
+    tokens: [{"old":"/recipes/discover/pool","type":0,"val":"recipes","end":""},{"old":"/recipes/discover/pool","type":0,"val":"discover","end":""},{"old":"/recipes/discover/pool","type":0,"val":"pool","end":""}],
+    types: placeholder as Registry['recipe_discovery.pool']['types'],
+  },
+  'recipe_discovery.save': {
+    methods: ["POST"],
+    pattern: '/recipes/discover/save',
+    tokens: [{"old":"/recipes/discover/save","type":0,"val":"recipes","end":""},{"old":"/recipes/discover/save","type":0,"val":"discover","end":""},{"old":"/recipes/discover/save","type":0,"val":"save","end":""}],
+    types: placeholder as Registry['recipe_discovery.save']['types'],
+  },
   'recipes.edit': {
     methods: ["GET","HEAD"],
     pattern: '/recipes/:id/edit',
